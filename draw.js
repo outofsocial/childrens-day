@@ -91,7 +91,8 @@ Gift.prototype.babycheck = function() {
 }
 
 function babyFaceChanger(type) {
-  const face = type ? {a: '0x1f476', r: '0x1f60d'} : {a: '0x1f6b6', r: '0x1f3c3'};
+  const face = type ? {a: '0x1f476', r: '0x1f60d'} : {a: '0x1f6b6', r: '0x1f6b4'};
+  // const face = type ? {a: '0x1f476', r: '0x1f60d'} : {a: '0x1f6b6', r: '0x1f3c3'};
   return Baby.babyFace = Baby.run ? face.r : face.a;
 }
 const Baby = {
@@ -135,7 +136,6 @@ function render() {
   ctx.fillStyle = "lightGreen";
   ctx.fillRect(0, 0, BR.x, BR.y);
   
-  Baby.draw();
   for(const i in gifts){
     if(gifts[i]){
       gifts[i].draw();
@@ -145,8 +145,9 @@ function render() {
       }
     }
   }
+  Baby.draw();
   ctx.font = `${settings.giftSize*1.4}px Aerial`;
-  ctx.fillText(String.fromCodePoint('0x1F9D9'),canvasPos.x-settings.giftSize, canvasPos.y-settings.giftSize*.0125);
+  ctx.fillText(String.fromCodePoint('0x1F9DE'),canvasPos.x-settings.giftSize, canvasPos.y-settings.giftSize*.0125);
   requestFrame(render);
 }
 

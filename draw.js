@@ -146,7 +146,7 @@ function render() {
     }
   }
   ctx.font = `${settings.giftSize*1.4}px Aerial`;
-  ctx.fillText(String.fromCodePoint('0x1F9D9'),canvasPos.x-75, canvasPos.y+25);
+  ctx.fillText(String.fromCodePoint('0x1F9D9'),canvasPos.x-settings.giftSize, canvasPos.y-settings.giftSize*.0125);
   requestFrame(render);
 }
 

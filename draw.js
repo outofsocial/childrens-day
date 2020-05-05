@@ -182,7 +182,9 @@ window.addEventListener('resize',function() {
 
 ['mousedown', 'touchstart'].forEach( event => {
   canvas.addEventListener(event, () => {
-    gifter = setInterval( () => {new Gift(giftIdx++)},1000/100);
+    if(!gifter) {
+      gifter = setInterval( () => {new Gift(giftIdx++)},1000/100);
+    }
   });
 });
 
@@ -190,10 +192,17 @@ window.addEventListener('resize',function() {
   canvas.addEventListener(event, () => {
     if(gifter) {
       clearInterval(gifter);
+      gifter = undefined;
     }
   });
 });
 
+canvas.onmouseout = () => {
+  if(gifter) {
+    clearInterval(gifter);
+    gifter = undefined;
+  }
+};
 window.addEventListener('keyup', ev => {
   switch(ev.keyCode){
     case 82:

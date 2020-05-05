@@ -63,13 +63,11 @@ Gift.prototype.draw = function() {
     this.vx *= -1;
     this.x = settings.walls.left - settings.giftSize;
   }
-
   if( (this.x + settings.giftSize) > settings.walls.right ) {
     this.vx *= -1;
     this.x = settings.walls.right - settings.giftSize;
   }
   this.vy += settings.gravity;
-  
 }
 
 Gift.prototype.babycheck = function() {
@@ -80,10 +78,10 @@ Gift.prototype.babycheck = function() {
       Baby.vx = Baby.vx*2;
     }
     delete gifts[this.id];
-    if(Baby.inLove){
-      clearTimeout(Baby.inLove);
+    if(Baby.running){
+      clearTimeout(Baby.running);
     }
-    Baby.inLove = setTimeout( () => {
+    Baby.running = setTimeout( () => {
       Baby.run = false;
       Baby.vx = Baby.vx/2;
       babyFaceChanger(Baby.babyType);
@@ -93,16 +91,15 @@ Gift.prototype.babycheck = function() {
 
 function babyFaceChanger(type) {
   const face = type ? {a: '0x1f476', r: '0x1f60d'} : {a: '0x1f6b6', r: '0x1f6b4'};
-  // const face = type ? {a: '0x1f476', r: '0x1f60d'} : {a: '0x1f6b6', r: '0x1f3c3'};
   return Baby.babyFace = Baby.run ? face.r : face.a;
 }
 const Baby = {
-  inLove: undefined,
   babySize: settings.giftSize*2,
   babyType: false,
   babyFace: '0x1f6b6',
-  lookR: true,
+  running: undefined,
   run: false,
+  lookR: true,
   x: 0,
   vx: settings.giftSize/4,
   y: (settings.walls.bottom - 50),
@@ -124,7 +121,8 @@ const Baby = {
     ctx.fillText(String.fromCodePoint(this.babyFace),this.x*(this.lookR ? -1 : 1),this.y)
     ctx.restore();
   }
-}
+};
+
 window.requestFrame = (function() {
   return  window.requestAnimationFrame       || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame    ||
     function( callback ){
@@ -132,20 +130,19 @@ window.requestFrame = (function() {
     };
 })();
 
-
 function render() {
   ctx.fillStyle = "lightGreen";
   ctx.fillRect(0, 0, BR.x, BR.y);
   
-  for(const i in gifts){
-    if(gifts[i]){
+  for(const i in gifts) {
+    if(gifts[i]) {
       gifts[i].draw();
-      
-      if(gifts[i]){
+      if(gifts[i]) {
         gifts[i].babycheck();
       }
     }
-  }
+  };
+  
   Baby.draw();
   ctx.font = `${settings.giftSize*1.4}px Aerial`;
   // 0x1F9DE genie
@@ -169,7 +166,7 @@ function reRender() {
   Baby.x = 0;
   Baby.y = (BR.y - 50);
   Baby.vx = settings.giftSize/4;
-}
+};
 
 window.addEventListener('resize',function() {
   reRender();
@@ -208,6 +205,7 @@ canvas.onmouseout = () => {
     gifter = undefined;
   }
 };
+
 window.addEventListener('keyup', ev => {
   switch(ev.keyCode){
     case 82:

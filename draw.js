@@ -102,7 +102,7 @@ const Baby = {
   lookR: true,
   run: false,
   x: 0,
-  vx: BR.x/100,
+  vx: settings.giftSize,
   y: (settings.walls.bottom - 50),
   draw: function() {
     this.x += this.vx;
@@ -165,7 +165,7 @@ function reRender() {
   Baby.babySize = settings.giftSize*2;
   Baby.x = 0;
   Baby.y = (BR.y - 50);
-  Baby.vx = BR.x/100;
+  Baby.vx = settings.giftSize;
 }
 
 window.addEventListener('resize',function() {

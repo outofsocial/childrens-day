@@ -15,6 +15,7 @@ const ctx = canvas.getContext('2d');
 const gifts = {};
 let giftIdx = 0;
 let gifter;
+let cursor = '0x1f9d1';
 
 const settings = {
   giftSize: BR.x/10 < 50 ? BR.x/10 : 50,
@@ -147,7 +148,8 @@ function render() {
   }
   Baby.draw();
   ctx.font = `${settings.giftSize*1.4}px Aerial`;
-  ctx.fillText(String.fromCodePoint('0x1F9DE'),canvasPos.x-settings.giftSize, canvasPos.y-settings.giftSize*.0125);
+  // 0x1F9DE genie
+  ctx.fillText(String.fromCodePoint(cursor),canvasPos.x-settings.giftSize, canvasPos.y-settings.giftSize*.0125);
   requestFrame(render);
 }
 
@@ -183,6 +185,7 @@ window.addEventListener('resize',function() {
 
 ['mousedown', 'touchstart'].forEach( event => {
   canvas.addEventListener(event, () => {
+    cursor = '0x1f9d9'
     if(!gifter) {
       gifter = setInterval( () => {new Gift(giftIdx++)},1000/100);
     }
@@ -191,6 +194,7 @@ window.addEventListener('resize',function() {
 
 ['mouseup', 'touchend'].forEach( event => {
   canvas.addEventListener(event, () => {
+    cursor = '0x1f9d1'
     if(gifter) {
       clearInterval(gifter);
       gifter = undefined;

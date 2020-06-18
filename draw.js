@@ -170,7 +170,6 @@ function reRender() {
 
 function clearGiftInterval() {
 	if(!gifter) return;
-	console.log('1');
 	clearInterval(gifter);
 	gifter = undefined;
 }

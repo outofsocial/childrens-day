@@ -168,43 +168,42 @@ function reRender() {
   Baby.vx = settings.giftSize/4;
 };
 
-window.addEventListener('resize',function() {
-  reRender();
-});
+function clearGiftInterval() {
+	if(!gifter) return;
+	console.log('1');
+	clearInterval(gifter);
+	gifter = undefined;
+}
+
+window.addEventListener('resize',reRender);
 
 ['mousemove', 'touchmove'].forEach( event => {
   canvas.addEventListener(event, (ev) => {
-    const target = /touch/.test(ev.type) ? ev.targetTouches[0] : ev;
+		const touchmove = event === 'touchmove';
+		const target = touchmove ? ev.targetTouches[0] : ev;
+		if (touchmove) ev.preventDefault();
     canvasPos.x = target.clientX;
     canvasPos.y = target.clientY;
   });
 });
 
 ['mousedown', 'touchstart'].forEach( event => {
-  canvas.addEventListener(event, () => {
+  canvas.addEventListener(event, (ev) => {
+		if(event === 'touchstart') ev.preventDefault();
     cursor = '0x1f9d9'
-    if(!gifter) {
-      gifter = setInterval( () => {new Gift(giftIdx++)},1000/100);
-    }
+    if(!gifter) gifter = setInterval( () => {new Gift(giftIdx++)},1000/100);
   });
 });
 
 ['mouseup', 'touchend'].forEach( event => {
-  canvas.addEventListener(event, () => {
+  canvas.addEventListener(event, (ev) => {
+		if(event === 'touchend') ev.preventDefault();
     cursor = '0x1f9d1'
-    if(gifter) {
-      clearInterval(gifter);
-      gifter = undefined;
-    }
+    if(gifter) return clearGiftInterval();
   });
 });
 
-canvas.onmouseout = () => {
-  if(gifter) {
-    clearInterval(gifter);
-    gifter = undefined;
-  }
-};
+canvas.onmouseout = clearGiftInterval;
 
 window.addEventListener('keyup', ev => {
   switch(ev.keyCode){
